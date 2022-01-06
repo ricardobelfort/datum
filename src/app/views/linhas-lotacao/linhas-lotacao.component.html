@@ -1,0 +1,93 @@
+<div class="card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-sm-6">Linhas de Lotação</div>
+      <div class="col-sm-6 text-end">
+        Total de Registros: <strong>{{ lotacao.length }}</strong>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row g-3 align-items-center mb-4">
+      <div class="col-sm-6">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="searchValue"
+          placeholder="Pesquisar linha de lotação pelo Nome"
+        />
+      </div>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Código</th>
+          <th scope="col">Nome</th>
+          <th scope="col">Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let item of lotacao
+              | searchFilter: searchValue
+              | paginate: { itemsPerPage: 10, currentPage: page }
+          "
+        >
+          <td>{{ item.id }}</td>
+          <td>{{ item.codigo }}</td>
+          <td>{{ item.nome }}</td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-link btn-sm"
+              data-bs-toggle="modal"
+              data-bs-target="#itinerario"
+              (click)="pegarItinerarioPorId(item.id)"
+            >
+              Ver Itinerário
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination justify-content-center">
+      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="itinerario"
+  tabindex="-1"
+  aria-labelledby="itinerarioModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="itinerarioModal">Mapa de Itinerário</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="full" id="map"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
